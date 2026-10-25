@@ -1,0 +1,104 @@
+<!-- Job board: search and filters, then the list. Controller: JobBoardCtrl as vm -->
+
+<div class="page-head">
+  <div>
+    <h1>Open jobs</h1>
+    <p class="page-sub">Live requirements from our recruiting team</p>
+  </div>
+  <button type="button" class="btn btn-default" ng-click="vm.load()" ng-disabled="vm.state === 'loading'">Refresh</button>
+</div>
+
+<!-- Filters. ng-change runs applyFilters() whenever a value changes. -->
+<form class="panel-box filters" role="search" aria-label="Filter jobs" ng-submit="vm.applyFilters()">
+  <div class="form-group filter-search">
+    <label for="search">Search</label>
+    <!-- debounce: wait 250 ms after the last key before filtering -->
+    <input type="search" id="search" class="form-control" placeholder="Title, skill or city, like AngularJS"
+           ng-model="vm.filters.search" ng-change="vm.applyFilters()"
+           ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 250, 'blur': 0 } }">
+  </div>
+
+  <!-- Kendo DropDownLists. ng-model binds the selected value; k-option-label is the "All" choice. -->
+  <div class="form-group">
+    <label for="workLocation">Work location</label>
+    <select id="workLocation" kendo-drop-down-list style="width: 100%"
+            k-data-source="vm.workLocations" k-option-label="'All locations'"
+            ng-model="vm.filters.workLocation" k-on-change="vm.applyFilters()"></select>
+  </div>
+  <div class="form-group">
+    <label for="employmentType">Employment type</label>
+    <select id="employmentType" kendo-drop-down-list style="width: 100%"
+            k-data-source="vm.employmentTypes" k-option-label="'All types'"
+            ng-model="vm.filters.employmentType" k-on-change="vm.applyFilters()"></select>
+  </div>
+
+  <div class="filter-actions">
+    <button type="button" class="btn btn-default" ng-click="vm.clearFilters()" ng-disabled="!vm.hasFilters()">Clear</button>
+  </div>
+</form>
+
+<!-- Loading, error and "no jobs at all" come from one reusable component. -->
+<state-panel state="vm.state" message="vm.errorMessage" loading-text="Loading open jobs..." on-retry="vm.load()">
+  <h2>No open jobs right now</h2>
+  <p>New requirements are posted every week. Check back soon.</p>
+</state-panel>
+
+<section ng-if="vm.state === 'ready'" aria-label="Job results">
+  <p class="result-count" aria-live="polite">Showing {{vm.visible.length}} of {{vm.jobs.length}} jobs</p>
+
+  <!-- Filters hide everything: different from "no jobs at all". -->
+  <div class="panel-box state-panel" ng-if="!vm.visible.length">
+    <h2>No jobs match</h2>
+    <p>Try a different search or clear the filters.</p>
+    <button type="button" class="btn btn-default" ng-click="vm.clearFilters()">Clear filters</button>
+  </div>
+
+  <!-- OPTION A: Kendo Grid, only when a licensed Kendo build with Grid is loaded. -->
+  <div class="grid-box" ng-if="vm.useGrid && vm.visible.length" kendo-grid="vm.grid" k-options="vm.gridOptions"></div>
+
+  <!-- OPTION B (default): a table on tablet and desktop... -->
+  <div class="panel-box table-box" ng-if="!vm.useGrid && vm.visible.length">
+    <table class="table job-table">
+      <thead>
+        <tr>
+          <th scope="col" aria-sort="{{vm.ariaSort('title')}}">
+            <button type="button" class="sort-btn" ng-click="vm.sortBy('title')">Job title
+              <span class="arrow" aria-hidden="true" ng-if="vm.sort.field === 'title'">{{vm.sort.reverse ? '▼' : '▲'}}</span></button>
+          </th>
+          <th scope="col" aria-sort="{{vm.ariaSort('location')}}">
+            <button type="button" class="sort-btn" ng-click="vm.sortBy('location')">Location
+              <span class="arrow" aria-hidden="true" ng-if="vm.sort.field === 'location'">{{vm.sort.reverse ? '▼' : '▲'}}</span></button>
+          </th>
+          <th scope="col">Type</th>
+          <th scope="col">Experience</th>
+          <th scope="col" aria-sort="{{vm.ariaSort('postedDate')}}">
+            <button type="button" class="sort-btn" ng-click="vm.sortBy('postedDate')">Posted
+              <span class="arrow" aria-hidden="true" ng-if="vm.sort.field === 'postedDate'">{{vm.sort.reverse ? '▼' : '▲'}}</span></button>
+          </th>
+          <th scope="col"><span class="sr-only">Actions</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- track by job.id: AngularJS reuses rows instead of rebuilding them on refresh -->
+        <tr ng-repeat="job in vm.visible track by job.id">
+          <td>
+            <strong>{{::job.title}}</strong>
+            <div class="cell-sub">{{::job.skills.slice(0, 3).join(', ')}}</div>
+          </td>
+          <td>{{::job.location}}<br><location-badge value="job.workLocation"></location-badge></td>
+          <td>{{::job.employmentType}}</td>
+          <td>{{::job.experience}}+ yrs</td>
+          <td>{{::job.postedDate | date:'MMM d, y'}}</td>
+          <td class="text-right">
+            <a class="btn btn-default btn-sm" href="#/jobs/{{::job.id}}" aria-label="View {{::job.title}}">View</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ...and cards on phones. CSS decides which one is visible. -->
+  <div class="card-list" ng-if="!vm.useGrid && vm.visible.length">
+    <job-card ng-repeat="job in vm.visible track by job.id" job="job"></job-card>
+  </div>
+</section>

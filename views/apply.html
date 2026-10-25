@@ -1,0 +1,106 @@
+<!-- Apply form. Controller: ApplyCtrl as vm -->
+
+<p><a href="#/jobs/{{vm.job.id}}" class="back-link" ng-if="vm.job">&larr; Back to job</a></p>
+
+<state-panel state="vm.state" message="vm.errorMessage" loading-text="Loading job..." on-retry="vm.load()"></state-panel>
+
+<div ng-if="vm.state === 'ready'">
+  <div class="page-head">
+    <div>
+      <h1>Apply: {{vm.job.title}}</h1>
+      <p class="page-sub">{{vm.job.location}} &middot; {{vm.job.employmentType}}</p>
+    </div>
+  </div>
+
+  <div class="alert alert-warning" role="status" ng-if="!vm.job.isOpen">
+    This job is no longer accepting applications. <a href="#/jobs">See open jobs</a>
+  </div>
+
+  <!--
+    novalidate: turn off the browser's own popups so AngularJS validation shows instead.
+    name="applyForm": AngularJS publishes the form's state as applyForm.$invalid,
+    applyForm.email.$error.email and so on, which the template reads below.
+  -->
+  <form name="applyForm" class="panel-box apply-form" novalidate ng-if="vm.job.isOpen"
+        ng-submit="vm.submit(applyForm)">
+
+    <!-- Server-side errors (duplicate application, expired sign-in, service down) -->
+    <div class="alert alert-danger" role="alert" ng-if="vm.serverError">
+      {{vm.serverError}}
+      <a ng-if="vm.sessionExpired" ng-href="{{vm.signInAgainLink}}">Sign in again</a>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-6 form-group" ng-class="{ 'has-error': applyForm.fullName.$touched && applyForm.fullName.$invalid }">
+        <label for="fullName" class="required">Full name</label>
+        <input type="text" id="fullName" name="fullName" class="form-control" autocomplete="name"
+               ng-model="vm.form.fullName" required ng-maxlength="80" aria-describedby="fullNameError">
+        <div id="fullNameError" class="field-error" ng-messages="applyForm.fullName.$error" ng-if="applyForm.fullName.$touched">
+          <div ng-message="required">Enter your full name.</div>
+          <div ng-message="maxlength">Use 80 characters or fewer.</div>
+        </div>
+      </div>
+
+      <!-- The email comes from the account, so it is shown, not edited. -->
+      <div class="col-sm-6 form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" class="form-control" ng-value="vm.user.email" readonly
+               aria-describedby="emailHint">
+        <p id="emailHint" class="hint">From your account. Recruiters will reply here.</p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-6 form-group" ng-class="{ 'has-error': applyForm.phone.$touched && applyForm.phone.$invalid }">
+        <label for="phone">Phone <span class="optional">(optional)</span></label>
+        <input type="tel" id="phone" name="phone" class="form-control" autocomplete="tel"
+               placeholder="(214) 555-0182" ng-model="vm.form.phone"
+               ng-pattern="/^[0-9()+\-.\s]{7,20}$/" aria-describedby="phoneError">
+        <div id="phoneError" class="field-error" ng-messages="applyForm.phone.$error" ng-if="applyForm.phone.$touched">
+          <div ng-message="pattern">Use digits, spaces, dashes or brackets only.</div>
+        </div>
+      </div>
+
+      <!-- A Kendo DropDownList that still takes part in AngularJS validation through ng-model + required.
+           k-on-close marks it touched, so its error shows once the list has been opened and closed. -->
+      <div class="col-sm-6 form-group" ng-class="{ 'has-error': applyForm.workAuthorization.$touched && applyForm.workAuthorization.$invalid }">
+        <label for="workAuthorization" class="required">Work authorization</label>
+        <select id="workAuthorization" name="workAuthorization" kendo-drop-down-list style="width: 100%"
+                k-data-source="vm.workAuthorizations" k-option-label="'Choose one'"
+                k-on-close="applyForm.workAuthorization.$setTouched()"
+                ng-model="vm.form.workAuthorization" required aria-describedby="workAuthorizationError"></select>
+        <div id="workAuthorizationError" class="field-error" ng-messages="applyForm.workAuthorization.$error"
+             ng-if="applyForm.workAuthorization.$touched">
+          <div ng-message="required">Choose your work authorization.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group" ng-class="{ 'has-error': applyForm.resumeUrl.$touched && applyForm.resumeUrl.$invalid }">
+      <label for="resumeUrl" class="required">Resume link</label>
+      <input type="url" id="resumeUrl" name="resumeUrl" class="form-control"
+             placeholder="https://drive.example.com/your-resume.pdf" ng-model="vm.form.resumeUrl" required
+             aria-describedby="resumeUrlError resumeUrlHint">
+      <p id="resumeUrlHint" class="hint">A shareable link to your resume (Google Drive, OneDrive, LinkedIn).</p>
+      <div id="resumeUrlError" class="field-error" ng-messages="applyForm.resumeUrl.$error" ng-if="applyForm.resumeUrl.$touched">
+        <div ng-message="required">Add a link to your resume.</div>
+        <div ng-message="url">Enter a full link starting with https://</div>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary" ng-disabled="applyForm.$invalid || vm.submitting">
+        {{vm.submitting ? 'Submitting...' : 'Submit application'}}
+      </button>
+      <a class="btn btn-default" href="#/jobs/{{vm.job.id}}">Cancel</a>
+    </div>
+    <p class="hint" ng-if="applyForm.$invalid">Fill in the fields marked * to submit.</p>
+  </form>
+
+  <!-- Opens when vm.submitted is set; closing it calls vm.finish(). -->
+  <success-modal visible="vm.submitted" heading="Application submitted"
+                 button-label="See my applications" on-close="vm.finish()">
+    <p>Thanks, {{vm.form.fullName}}. Your application for <strong>{{vm.job.title}}</strong> has been sent to our recruiting team.</p>
+    <p class="hint">Reference: {{vm.submitted.id}}</p>
+  </success-modal>
+</div>

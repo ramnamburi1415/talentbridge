@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<!--
+  index.html — the only page. AngularJS swaps the screens inside <main ng-view>.
+
+  ng-app="talentBridge.mock" starts the app WITH the mock Salesforce API
+  (including a practice account: demo@talentbridge.dev / Demo1234).
+  Phase 3 (real Salesforce): change it to ng-app="talentBridge" and delete the
+  two script tags marked MOCK at the bottom.
+-->
+<html lang="en" ng-app="talentBridge.mock">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TalentBridge | Open jobs</title>
+  <link rel="icon" href="data:,">
+
+  <link rel="stylesheet" href="vendor/bootstrap.min.css">
+  <link rel="stylesheet" href="vendor/kendo/kendo.common-bootstrap.min.css">
+  <link rel="stylesheet" href="vendor/kendo/kendo.bootstrap.min.css">
+  <link rel="stylesheet" href="css/app.css">
+</head>
+<body ng-controller="ShellCtrl as shell">
+
+  <a href="#main" class="skip-link" onclick="document.getElementById('main').focus(); return false;">Skip to content</a>
+
+  <header class="app-header">
+    <div class="inner">
+      <a class="brand" href="#/jobs">TalentBridge</a>
+      <nav class="top-nav" aria-label="Main">
+        <a href="#/jobs" ng-class="{ active: shell.onJobs() }">Jobs</a>
+        <a href="#/my-applications" ng-if="shell.isSignedIn()" ng-class="{ active: shell.onPath('/my-applications') }">My applications</a>
+      </nav>
+
+      <!-- Who is signed in. ng-cloak hides it until AngularJS has started. -->
+      <div class="user-nav" ng-cloak>
+        <a ng-if="!shell.isSignedIn()" class="btn btn-sm btn-default" ng-href="{{shell.signInLink()}}">Sign in</a>
+        <span ng-if="shell.isSignedIn()" class="user-name" title="{{shell.user().email}}">Hi, {{shell.firstName()}}</span>
+        <button ng-if="shell.isSignedIn()" type="button" class="btn btn-sm btn-link sign-out" ng-click="shell.signOut()">Sign out</button>
+      </div>
+
+      <!-- Practice controls. They exist only while the mock API is running. -->
+      <div class="mock-tools" ng-if="mock" ng-cloak>
+        <label><input type="checkbox" id="failToggle" ng-model="mock.fail"> Simulate API failure</label>
+        <button type="button" class="btn btn-link" ng-click="resetMockData()">Reset practice data</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="app-main" id="main" tabindex="-1" ng-view></main>
+
+  <!-- Libraries, in dependency order. jQuery first, so AngularJS and Kendo both use it. -->
+  <script src="vendor/jquery.min.js"></script>
+  <script src="vendor/bootstrap.min.js"></script>
+  <script src="vendor/angular.min.js"></script>
+  <script src="vendor/angular-route.min.js"></script>
+  <script src="vendor/angular-messages.min.js"></script>
+  <!-- Kendo UI Core (free, Apache 2.0): DropDownList + the AngularJS directives.
+       For the Kendo Grid, replace this with a licensed kendo.all.min.js (see README). -->
+  <script src="vendor/kendo/kendo.dropdownlist-angular.min.js"></script>
+
+  <!-- App: module first, then everything that registers on it. -->
+  <script src="js/app.module.js"></script>
+  <script src="js/services/api-error.service.js"></script>
+  <script src="js/services/auth.service.js"></script>
+  <script src="js/services/auth.interceptor.js"></script>
+  <script src="js/services/job.service.js"></script>
+  <script src="js/components/ui.components.js"></script>
+  <script src="js/directives/success-modal.directive.js"></script>
+  <script src="js/directives/match.directive.js"></script>
+  <script src="js/controllers/shell.controller.js"></script>
+  <script src="js/controllers/job-board.controller.js"></script>
+  <script src="js/controllers/job-detail.controller.js"></script>
+  <script src="js/controllers/apply.controller.js"></script>
+  <script src="js/controllers/login.controller.js"></script>
+  <script src="js/controllers/register.controller.js"></script>
+  <script src="js/controllers/my-applications.controller.js"></script>
+
+  <!-- MOCK: remove both lines when connecting to real Salesforce. -->
+  <script src="vendor/angular-mocks.js"></script>
+  <script src="js/mock/mock-salesforce-api.js"></script>
+</body>
+</html>

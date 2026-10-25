@@ -1,0 +1,116 @@
+// Seed TalentBridge with the same 8 sample jobs the mock API uses.
+// Run it in Salesforce: Developer Console > Debug > Open Execute Anonymous Window,
+// paste everything, tick "Open Log", click Execute.
+// Running it twice creates the jobs twice; delete the extras from the Job Requirements tab.
+List<Job_Requirement__c> jobs = new List<Job_Requirement__c>{
+    new Job_Requirement__c(
+        Name = 'AngularJS UI Developer',
+        Employment_Type__c = 'Contract - W2',
+        Work_Location__c = 'Onsite',
+        City__c = 'Dallas',
+        State__c = 'TX',
+        Duration__c = 'Long term',
+        Experience_Years__c = 4,
+        Skills__c = 'HTML5, CSS3, JavaScript, jQuery, AngularJS, Kendo UI, Bootstrap, Git',
+        Description__c = 'Build and maintain reusable UI components for an enterprise web application, working closely with UI/UX designers and back-end developers.',
+        Responsibilities__c = 'Turn wireframes and prototypes into responsive, reusable front-end code\nIntegrate REST APIs and back-end services\nTroubleshoot UI issues and ensure cross-browser compatibility\nManage branches and pull requests in Bitbucket',
+        Status__c = 'Open',
+        Posted_Date__c = Date.valueOf('2026-10-14')
+    ),
+    new Job_Requirement__c(
+        Name = 'Front-End Engineer',
+        Employment_Type__c = 'Full-time',
+        Work_Location__c = 'Hybrid',
+        City__c = 'Austin',
+        State__c = 'TX',
+        Duration__c = 'Permanent',
+        Experience_Years__c = 3,
+        Skills__c = 'JavaScript, REST APIs, CSS3, Accessibility',
+        Description__c = 'Join a product team building customer-facing dashboards.',
+        Responsibilities__c = 'Build accessible, responsive pages\nWork with designers on new features\nWrite unit tests for UI logic',
+        Status__c = 'Open',
+        Posted_Date__c = Date.valueOf('2026-10-12')
+    ),
+    new Job_Requirement__c(
+        Name = 'Senior UI Developer',
+        Employment_Type__c = 'Contract to hire',
+        Work_Location__c = 'Remote',
+        Duration__c = '6 months, then permanent',
+        Experience_Years__c = 6,
+        Skills__c = 'Angular, TypeScript, RxJS, Bootstrap',
+        Description__c = 'Lead UI work on a migration from AngularJS to modern Angular.',
+        Responsibilities__c = 'Plan the component migration\nReview pull requests\nMentor two junior developers',
+        Status__c = 'Open',
+        Posted_Date__c = Date.valueOf('2026-10-10')
+    ),
+    new Job_Requirement__c(
+        Name = 'Salesforce Developer',
+        Employment_Type__c = 'Contract - W2',
+        Work_Location__c = 'Onsite',
+        City__c = 'Plano',
+        State__c = 'TX',
+        Duration__c = '12 months',
+        Experience_Years__c = 5,
+        Skills__c = 'Apex, SOQL, Lightning Web Components, REST APIs',
+        Description__c = 'Extend a Salesforce org used by recruiters and account managers.',
+        Responsibilities__c = 'Write Apex classes and triggers\nBuild Lightning Web Components\nIntegrate external systems through REST',
+        Status__c = 'Open',
+        Posted_Date__c = Date.valueOf('2026-10-08')
+    ),
+    new Job_Requirement__c(
+        Name = 'UX Engineer',
+        Employment_Type__c = 'Full-time',
+        Work_Location__c = 'Hybrid',
+        City__c = 'Houston',
+        State__c = 'TX',
+        Duration__c = 'Permanent',
+        Experience_Years__c = 4,
+        Skills__c = 'Figma, HTML5, CSS3, Design systems',
+        Description__c = 'Bridge design and engineering by building the company design system.',
+        Responsibilities__c = 'Build and document shared components\nPrototype new flows with designers\nRun accessibility reviews',
+        Status__c = 'Open',
+        Posted_Date__c = Date.valueOf('2026-10-05')
+    ),
+    new Job_Requirement__c(
+        Name = 'jQuery Developer',
+        Employment_Type__c = 'Contract - W2',
+        Work_Location__c = 'Remote',
+        Duration__c = '6 months',
+        Experience_Years__c = 2,
+        Skills__c = 'jQuery, HTML5, CSS3, Bootstrap',
+        Description__c = 'Maintain and modernise a legacy customer portal.',
+        Responsibilities__c = 'Fix UI bugs across browsers\nReplace scattered DOM code with reusable plugins\nImprove page load time',
+        Status__c = 'Open',
+        Posted_Date__c = Date.valueOf('2026-10-02')
+    ),
+    new Job_Requirement__c(
+        Name = 'Java Spring Boot Developer',
+        Employment_Type__c = 'Contract to hire',
+        Work_Location__c = 'Hybrid',
+        City__c = 'Dallas',
+        State__c = 'TX',
+        Duration__c = '18 months',
+        Experience_Years__c = 5,
+        Skills__c = 'Java, Spring Boot, REST APIs, SQL',
+        Description__c = 'Build the REST services behind a claims-processing front end.',
+        Responsibilities__c = 'Design and build REST endpoints\nWrite integration tests\nWork with front-end developers on API contracts',
+        Status__c = 'Open',
+        Posted_Date__c = Date.valueOf('2026-09-30')
+    ),
+    new Job_Requirement__c(
+        Name = 'QA Automation Engineer',
+        Employment_Type__c = 'Contract - W2',
+        Work_Location__c = 'Onsite',
+        City__c = 'Irving',
+        State__c = 'TX',
+        Duration__c = '6 months',
+        Experience_Years__c = 3,
+        Skills__c = 'Selenium, JavaScript, Jenkins',
+        Description__c = 'Automate regression tests for a web application.',
+        Responsibilities__c = 'Write UI automation tests\nRun regression suites before releases',
+        Status__c = 'Closed',
+        Posted_Date__c = Date.valueOf('2026-09-01')
+    )
+};
+insert jobs;
+System.debug(jobs.size() + ' jobs created.');

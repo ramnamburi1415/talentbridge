@@ -1,0 +1,27 @@
+<!-- My applications. Controller: MyApplicationsCtrl as vm -->
+
+<div class="page-head">
+  <div>
+    <h1>My applications</h1>
+    <p class="page-sub">Signed in as {{vm.user.email}}</p>
+  </div>
+</div>
+
+<state-panel state="vm.state" message="vm.errorMessage" loading-text="Loading your applications..." on-retry="vm.load()">
+  <h2>No applications yet</h2>
+  <p>When you apply for a job, it shows up here with its status.</p>
+  <a class="btn btn-primary" href="#/jobs">Browse jobs</a>
+</state-panel>
+
+<div class="panel-box" ng-if="vm.state === 'ready'">
+  <ul class="app-list">
+    <li ng-repeat="app in vm.applications track by app.id" class="app-row">
+      <div class="app-main-info">
+        <a ng-if="app.jobId" href="#/jobs/{{::app.jobId}}"><strong>{{::app.jobTitle}}</strong></a>
+        <strong ng-if="!app.jobId">{{::app.jobTitle}}</strong>
+        <div class="cell-sub">{{::app.number}} &middot; Applied {{::app.submittedAt | date:'MMM d, y'}}</div>
+      </div>
+      <span class="badge-pill" ng-class="::'status-' + app.status.toLowerCase()">{{::app.status}}</span>
+    </li>
+  </ul>
+</div>

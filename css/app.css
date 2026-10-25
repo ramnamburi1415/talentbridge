@@ -1,0 +1,138 @@
+/*
+ * app.css — mobile-first.
+ * The plain rules are the phone layout. The @media (min-width: ...) blocks at
+ * the bottom add the tablet and desktop layout on top.
+ * Design values live in variables so they change in one place.
+ */
+:root {
+  --ink: #1d2733;
+  --ink-soft: #586779;
+  --line: #dde3ea;
+  --page: #f4f6f9;
+  --panel: #ffffff;
+  --brand: #0f3d5e;
+  --accent: #1f6fb8;
+  --space: 16px;
+}
+
+[ng-cloak] { display: none !important; }
+
+body { background: var(--page); color: var(--ink); font-size: 15px; }
+:focus-visible { outline: 3px solid #f5a623; outline-offset: 2px; }
+h1 { font-size: 24px; margin: 0 0 4px; }
+h2 { font-size: 17px; margin: 24px 0 8px; }
+
+.skip-link { position: absolute; left: -9999px; top: 8px; z-index: 1100; background: #fff; padding: 8px 12px; border-radius: 4px; }
+.skip-link:focus { left: 8px; }
+
+/* ---------- Header ---------- */
+.app-header { background: var(--brand); color: #fff; }
+.app-header .inner {
+  max-width: 1120px; margin: 0 auto; padding: 12px var(--space);
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px;
+}
+.brand { color: #fff; font-size: 19px; font-weight: 600; margin-right: auto; }
+.brand:hover, .brand:focus { color: #fff; text-decoration: none; }
+.top-nav { display: flex; gap: 16px; }
+.top-nav a { color: #cfe2f5; padding: 4px 0; }
+.top-nav a.active { color: #fff; border-bottom: 2px solid #fff; text-decoration: none; }
+.user-nav { display: flex; align-items: center; gap: 8px; }
+.user-name { color: #fff; font-size: 14px; }
+.user-nav .sign-out { color: #cfe2f5; padding: 0 4px; }
+.mock-tools { display: flex; align-items: center; gap: 12px; font-size: 13px; width: 100%; }
+.mock-tools label { margin: 0; font-weight: 400; display: flex; align-items: center; gap: 6px; cursor: pointer; }
+.mock-tools input { margin: 0; }
+.mock-tools .btn-link { color: #cfe2f5; padding: 0; font-size: 13px; }
+
+/* ---------- Page ---------- */
+.app-main { max-width: 1120px; margin: 0 auto; padding: 20px var(--space) 48px; outline: none; }
+.page-head { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: var(--space); }
+.page-sub { color: var(--ink-soft); margin: 0; }
+.panel-box { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: var(--space); margin-bottom: var(--space); }
+.back-link { display: inline-block; margin-bottom: 4px; }
+.hint { color: var(--ink-soft); font-size: 13px; margin: 6px 0 0; }
+
+/* ---------- Filters ---------- */
+.filters { display: flex; flex-direction: column; gap: 12px; }
+.filters .form-group { margin: 0; min-width: 0; }
+.filter-actions { display: flex; align-items: flex-end; }
+.result-count { color: var(--ink-soft); margin: 0 0 8px; }
+
+/* ---------- Badges and chips ---------- */
+.badge-pill { display: inline-block; padding: 2px 10px; border-radius: 10px; font-size: 12px; font-weight: 600; white-space: nowrap; }
+.pill-onsite  { background: #e2eefb; color: #0c447c; }
+.pill-hybrid  { background: #fdf0d3; color: #6b4700; }
+.pill-remote  { background: #dff3e4; color: #1c6b34; }
+.pill-neutral { background: #e6e9ed; color: #4a5560; }
+.tag { display: inline-block; padding: 2px 10px; border-radius: 10px; font-size: 12px; background: #eef1f5; color: var(--ink-soft); }
+.chips { list-style: none; padding: 0; margin: 8px 0 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.chips li { background: #eef1f5; border-radius: 4px; padding: 3px 8px; font-size: 13px; }
+
+/* ---------- Job list: cards on phones, table from 768px ---------- */
+.table-box { display: none; }
+.card-list { display: grid; gap: 12px; }
+.job-card { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 14px var(--space); }
+.job-card-title { font-size: 17px; margin: 0 0 6px; }
+.job-card-meta { color: var(--ink-soft); margin: 0 0 4px; font-size: 14px; }
+.job-table { margin: 0; }
+.job-table > thead > tr > th { border-bottom-width: 1px; color: var(--ink-soft); font-weight: 600; white-space: nowrap; }
+.job-table > tbody > tr > td { vertical-align: middle; border-top: 1px solid var(--line); padding: 12px 8px; }
+.cell-sub { color: var(--ink-soft); font-size: 13px; }
+.sort-btn { background: none; border: 0; padding: 0; font-weight: 600; color: inherit; }
+.sort-btn .arrow { color: var(--accent); }
+
+/* ---------- Job detail ---------- */
+.detail-layout { display: flex; flex-direction: column; }
+.detail-tags { display: flex; gap: 8px; flex-wrap: wrap; margin: 8px 0 0; }
+.facts { margin: 0 0 16px; }
+.facts dt { color: var(--ink-soft); font-weight: 400; font-size: 13px; }
+.facts dd { margin: 0 0 10px; font-weight: 600; }
+
+/* ---------- Form ---------- */
+label.required::after { content: ' *'; color: #a12622; }
+.apply-form .optional { font-weight: 400; color: var(--ink-soft); }
+.field-error { color: #a12622; font-size: 13px; margin-top: 4px; }
+.form-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.has-error .k-dropdown-wrap, .has-error .k-picker-wrap { border-color: #a94442; }
+
+/* ---------- Sign in / create account ---------- */
+.auth-wrap { max-width: 420px; margin: 0 auto; }
+.auth-wrap h1 { margin-top: 8px; }
+.auth-form { margin-top: var(--space); }
+.auth-switch { text-align: center; }
+input[readonly].form-control { background: #f4f6f9; }
+
+/* ---------- My applications ---------- */
+.app-list { list-style: none; margin: 0; padding: 0; }
+.app-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 0; border-top: 1px solid var(--line); }
+.app-row:first-child { border-top: 0; padding-top: 0; }
+.status-submitted { background: #e2eefb; color: #0c447c; }
+.status-reviewed  { background: #eef1f5; color: #4a5560; }
+.status-interview { background: #fdf0d3; color: #6b4700; }
+.status-hired     { background: #dff3e4; color: #1c6b34; }
+.status-rejected  { background: #fbe4e3; color: #8a1f1b; }
+
+/* ---------- Loading, empty, error ---------- */
+.state-panel { text-align: center; padding: 40px 16px; color: var(--ink-soft); }
+.state-panel h2 { color: var(--ink); margin-top: 0; }
+.state-error h2 { color: #a12622; }
+.spinner { display: inline-block; width: 32px; height: 32px; border: 3px solid var(--line); border-top-color: var(--accent); border-radius: 50%; animation: spin .8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .spinner { animation-duration: 3s; } }
+
+/* ---------- Tablet and up ---------- */
+@media (min-width: 768px) {
+  .mock-tools { width: auto; }
+  .filters { flex-direction: row; align-items: flex-end; }
+  .filters .form-group { flex: 1; }
+  .filters .filter-search { flex: 2; }
+  .table-box { display: block; overflow-x: auto; }
+  .card-list { display: none; }
+}
+
+/* ---------- Desktop: facts panel beside the description ---------- */
+@media (min-width: 992px) {
+  .detail-layout { flex-direction: row; align-items: flex-start; gap: var(--space); }
+  .detail-main { flex: 1; min-width: 0; }
+  .detail-side { width: 300px; flex-shrink: 0; position: sticky; top: 16px; }
+}

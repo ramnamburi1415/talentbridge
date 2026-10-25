@@ -1,0 +1,65 @@
+<!-- Create an account. Controller: RegisterCtrl as vm -->
+
+<div class="auth-wrap">
+  <h1>Create an account</h1>
+  <p class="page-sub">One account for all your applications.</p>
+
+  <form name="registerForm" class="panel-box auth-form" novalidate ng-submit="vm.submit(registerForm)">
+
+    <div class="alert alert-danger" role="alert" ng-if="vm.serverError">
+      {{vm.serverError}}
+      <a ng-if="vm.emailTaken" ng-href="{{vm.loginLink}}">Sign in</a>
+    </div>
+
+    <div class="form-group" ng-class="{ 'has-error': registerForm.fullName.$touched && registerForm.fullName.$invalid }">
+      <label for="regName" class="required">Full name</label>
+      <input type="text" id="regName" name="fullName" class="form-control" autocomplete="name"
+             ng-model="vm.form.fullName" required ng-maxlength="80" aria-describedby="regNameError">
+      <div id="regNameError" class="field-error" ng-messages="registerForm.fullName.$error" ng-if="registerForm.fullName.$touched">
+        <div ng-message="required">Enter your full name.</div>
+        <div ng-message="maxlength">Use 80 characters or fewer.</div>
+      </div>
+    </div>
+
+    <div class="form-group" ng-class="{ 'has-error': registerForm.email.$touched && registerForm.email.$invalid }">
+      <label for="regEmail" class="required">Email</label>
+      <input type="email" id="regEmail" name="email" class="form-control" autocomplete="email"
+             ng-model="vm.form.email" required ng-maxlength="80" aria-describedby="regEmailError">
+      <div id="regEmailError" class="field-error" ng-messages="registerForm.email.$error" ng-if="registerForm.email.$touched">
+        <div ng-message="required">Enter your email address.</div>
+        <div ng-message="email">Enter a valid email, like name@example.com.</div>
+        <div ng-message="maxlength">Use 80 characters or fewer.</div>
+      </div>
+    </div>
+
+    <div class="form-group" ng-class="{ 'has-error': registerForm.password.$touched && registerForm.password.$invalid }">
+      <label for="regPassword" class="required">Password</label>
+      <input type="password" id="regPassword" name="password" class="form-control" autocomplete="new-password"
+             ng-model="vm.form.password" required ng-pattern="vm.passwordPattern"
+             aria-describedby="regPasswordHint regPasswordError">
+      <p id="regPasswordHint" class="hint">At least 8 characters, with a letter and a number.</p>
+      <div id="regPasswordError" class="field-error" ng-messages="registerForm.password.$error" ng-if="registerForm.password.$touched">
+        <div ng-message="required">Choose a password.</div>
+        <div ng-message="pattern">Use at least 8 characters, with a letter and a number.</div>
+      </div>
+    </div>
+
+    <!-- tb-match is our own validator (js/directives/match.directive.js). -->
+    <div class="form-group" ng-class="{ 'has-error': registerForm.confirmPassword.$touched && registerForm.confirmPassword.$invalid }">
+      <label for="regConfirm" class="required">Confirm password</label>
+      <input type="password" id="regConfirm" name="confirmPassword" class="form-control" autocomplete="new-password"
+             ng-model="vm.form.confirmPassword" required tb-match="vm.form.password"
+             aria-describedby="regConfirmError">
+      <div id="regConfirmError" class="field-error" ng-messages="registerForm.confirmPassword.$error" ng-if="registerForm.confirmPassword.$touched">
+        <div ng-message="required">Type the password again.</div>
+        <div ng-message="match">The passwords don't match.</div>
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary btn-block" ng-disabled="registerForm.$invalid || vm.submitting">
+      {{vm.submitting ? 'Creating account...' : 'Create account'}}
+    </button>
+  </form>
+
+  <p class="auth-switch">Already have an account? <a ng-href="{{vm.loginLink}}">Sign in</a></p>
+</div>

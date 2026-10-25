@@ -1,0 +1,48 @@
+<!-- Job detail: the full requirement. Controller: JobDetailCtrl as vm -->
+
+<p><a href="#/jobs" class="back-link">&larr; All jobs</a></p>
+
+<state-panel state="vm.state" message="vm.errorMessage" loading-text="Loading job..." on-retry="vm.load()"></state-panel>
+
+<div ng-if="vm.state === 'ready'" class="detail-layout">
+
+  <article class="detail-main panel-box">
+    <h1>{{vm.job.title}}</h1>
+    <p class="detail-tags">
+      <location-badge value="vm.job.workLocation"></location-badge>
+      <span class="tag">{{vm.job.employmentType}}</span>
+    </p>
+
+    <div class="alert alert-warning" role="status" ng-if="!vm.job.isOpen">
+      This job is no longer accepting applications.
+    </div>
+
+    <h2>About the role</h2>
+    <p>{{vm.job.description}}</p>
+
+    <h2>Responsibilities</h2>
+    <ul>
+      <li ng-repeat="item in vm.job.responsibilities track by $index">{{item}}</li>
+    </ul>
+
+    <h2>Skills</h2>
+    <ul class="chips">
+      <li ng-repeat="skill in vm.job.skills track by $index">{{skill}}</li>
+    </ul>
+  </article>
+
+  <!-- Key facts: beside the description on desktop, below it on phones. -->
+  <aside class="detail-side panel-box" aria-label="Job summary">
+    <dl class="facts">
+      <dt>Location</dt><dd>{{vm.job.location}}</dd>
+      <dt>Employment type</dt><dd>{{vm.job.employmentType}}</dd>
+      <dt>Duration</dt><dd>{{vm.job.duration}}</dd>
+      <dt>Experience</dt><dd>{{vm.job.experience}}+ years</dd>
+      <dt>Posted</dt><dd>{{vm.job.postedDate | date:'MMMM d, y'}}</dd>
+    </dl>
+    <!-- Signed out: the same link still works; the route guard asks them to sign in first. -->
+    <a class="btn btn-primary btn-block" href="#/jobs/{{vm.job.id}}/apply" ng-if="vm.job.isOpen">
+      {{vm.isSignedIn() ? 'Apply now' : 'Sign in to apply'}}
+    </a>
+  </aside>
+</div>

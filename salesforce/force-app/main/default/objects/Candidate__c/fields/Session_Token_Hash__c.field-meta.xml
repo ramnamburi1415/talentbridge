@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Session_Token_Hash__c</fullName>
+    <description>SHA-256 of the current sign-in token. The token itself is only ever held by the browser. Indexed (External ID) for fast lookup.</description>
+    <externalId>true</externalId>
+    <label>Session Token Hash</label>
+    <length>64</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>
