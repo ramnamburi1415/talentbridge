@@ -1,13 +1,6 @@
 <!DOCTYPE html>
-<!--
-  index.html — the only page. AngularJS swaps the screens inside <main ng-view>.
-
-  ng-app="talentBridge.mock" starts the app WITH the mock Salesforce API
-  (including a practice account: demo@talentbridge.dev / Demo1234).
-  Phase 3 (real Salesforce): change it to ng-app="talentBridge" and delete the
-  two script tags marked MOCK at the bottom.
--->
-<html lang="en" ng-app="talentBridge.mock">
+<!-- index.html: TalentBridge, connected to the real Salesforce API. -->
+<html lang="en" ng-app="talentBridge">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -74,9 +67,5 @@
   <script src="js/controllers/login.controller.js"></script>
   <script src="js/controllers/register.controller.js"></script>
   <script src="js/controllers/my-applications.controller.js"></script>
-
-  <!-- MOCK: remove both lines when connecting to real Salesforce. -->
-  <script src="vendor/angular-mocks.js"></script>
-  <script src="js/mock/mock-salesforce-api.js"></script>
 </body>
 </html>

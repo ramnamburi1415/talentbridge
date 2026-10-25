@@ -1,0 +1,2 @@
+# Netlify: forward API calls to the Salesforce Site (status 200 = proxy, not a redirect).
+/services/apexrest/*  https://orgfarm-3e64971e3f-dev-ed.develop.my.salesforce-sites.com/api/services/apexrest/:splat  200
